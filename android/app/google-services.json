@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1008085104375",
+    "project_id": "alert-dev-60d76",
+    "storage_bucket": "alert-dev-60d76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008085104375:android:115d0e581a0d4cfafb85f2",
+        "android_client_info": {
+          "package_name": "dev.strange.alert.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2Nk_VKA1YW3BYQnILWV0SgieN-eQwA2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
