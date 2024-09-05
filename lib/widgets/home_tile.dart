@@ -4,16 +4,21 @@ class HomeTile extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
+  final Color? color;
 
-  const HomeTile(
-      {required this.title,
-      required this.icon,
-      required this.onTap,
-      super.key});
+  const HomeTile({
+    required this.title,
+    required this.icon,
+    required this.onTap,
+    this.color,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: color,
+      shape: CircleBorder(),
       child: InkWell(
         onTap: onTap,
         child: Column(

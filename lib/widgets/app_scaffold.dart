@@ -29,6 +29,22 @@ class AppScaffold extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: body,
       ),
+      bottomNavigationBar: NavigationBar(
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.format_list_bulleted),
+            label: 'Incidents',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
     );
   }
 }

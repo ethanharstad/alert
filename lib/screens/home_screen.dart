@@ -13,25 +13,36 @@ class HomeScreen extends StatelessWidget {
         maxCrossAxisExtent: 300,
         mainAxisSpacing: 16.0,
         crossAxisSpacing: 16.0,
+
         children: [
           HomeTile(
+            color: Colors.red,
             title: 'Lockdown',
             icon: Icons.lock,
             onTap: () {},
           ),
           HomeTile(
+            color: Colors.blue,
             title: 'Secure',
             icon: Icons.front_hand,
             onTap: () {},
           ),
           HomeTile(
+            color: Colors.orange,
             title: 'Shelter',
             icon: Icons.home,
             onTap: () {},
           ),
           HomeTile(
+            color: Colors.green,
             title: 'Evacuate',
             icon: Icons.directions_walk,
+            onTap: () {},
+          ),
+          HomeTile(
+            color: Colors.deepPurpleAccent,
+            title: 'Hold',
+            icon: Icons.door_front_door,
             onTap: () {},
           ),
         ],
