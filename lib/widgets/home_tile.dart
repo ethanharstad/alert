@@ -21,15 +21,24 @@ class HomeTile extends StatelessWidget {
       shape: const CircleBorder(),
       child: InkWell(
         onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 32),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Icon(icon),
+                ),
+              ),
+              const SizedBox(height: 8,),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ],
+          ),
         ),
       ),
     );

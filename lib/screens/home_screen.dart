@@ -13,7 +13,6 @@ class HomeScreen extends StatelessWidget {
         maxCrossAxisExtent: 300,
         mainAxisSpacing: 16.0,
         crossAxisSpacing: 16.0,
-
         children: [
           HomeTile(
             color: Colors.red,
