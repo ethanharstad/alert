@@ -18,7 +18,7 @@ class HomeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: color,
-      shape: CircleBorder(),
+      shape: const CircleBorder(),
       child: InkWell(
         onTap: onTap,
         child: Column(
