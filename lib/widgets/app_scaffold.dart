@@ -1,4 +1,5 @@
 import 'package:alert/blocs/app_bloc.dart';
+import 'package:alert/widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,14 +19,19 @@ class AppScaffold extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
         actions: [
-          IconButton(
-            onPressed: () {
-              context.read<AppBloc>().add(const LogOutPressed());
-            },
-            icon: const Icon(Icons.person_sharp),
+          Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                icon: const Icon(Icons.person_sharp),
+              );
+            }
           )
         ],
       ),
+      endDrawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: body,
