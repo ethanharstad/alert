@@ -8,6 +8,7 @@ class UserProfile with _$UserProfile {
   const factory UserProfile({
     required String id,
     required String name,
+    required String email,
   }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);

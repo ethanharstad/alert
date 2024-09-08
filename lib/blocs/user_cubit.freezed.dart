@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UserCubitState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(UserProfile profile) data,
@@ -25,6 +26,7 @@ mixin _$UserCubitState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(String? message)? error,
     TResult? Function(UserProfile profile)? data,
@@ -32,6 +34,7 @@ mixin _$UserCubitState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(UserProfile profile)? data,
@@ -40,23 +43,26 @@ mixin _$UserCubitState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Error value) error,
-    required TResult Function(_Data value) data,
+    required TResult Function(UserStateEmpty value) empty,
+    required TResult Function(UserStateLoading value) loading,
+    required TResult Function(UserStateError value) error,
+    required TResult Function(UserStateData value) data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Data value)? data,
+    TResult? Function(UserStateEmpty value)? empty,
+    TResult? Function(UserStateLoading value)? loading,
+    TResult? Function(UserStateError value)? error,
+    TResult? Function(UserStateData value)? data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
-    TResult Function(_Data value)? data,
+    TResult Function(UserStateEmpty value)? empty,
+    TResult Function(UserStateLoading value)? loading,
+    TResult Function(UserStateError value)? error,
+    TResult Function(UserStateData value)? data,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -84,18 +90,18 @@ class _$UserCubitStateCopyWithImpl<$Res, $Val extends UserCubitState>
 }
 
 /// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
+abstract class _$$UserStateEmptyImplCopyWith<$Res> {
+  factory _$$UserStateEmptyImplCopyWith(_$UserStateEmptyImpl value,
+          $Res Function(_$UserStateEmptyImpl) then) =
+      __$$UserStateEmptyImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$UserCubitStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+class __$$UserStateEmptyImplCopyWithImpl<$Res>
+    extends _$UserCubitStateCopyWithImpl<$Res, _$UserStateEmptyImpl>
+    implements _$$UserStateEmptyImplCopyWith<$Res> {
+  __$$UserStateEmptyImplCopyWithImpl(
+      _$UserStateEmptyImpl _value, $Res Function(_$UserStateEmptyImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UserCubitState
@@ -104,8 +110,125 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
+class _$UserStateEmptyImpl implements UserStateEmpty {
+  const _$UserStateEmptyImpl();
+
+  @override
+  String toString() {
+    return 'UserCubitState.empty()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$UserStateEmptyImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() empty,
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(UserProfile profile) data,
+  }) {
+    return empty();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? empty,
+    TResult? Function()? loading,
+    TResult? Function(String? message)? error,
+    TResult? Function(UserProfile profile)? data,
+  }) {
+    return empty?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? empty,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(UserProfile profile)? data,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UserStateEmpty value) empty,
+    required TResult Function(UserStateLoading value) loading,
+    required TResult Function(UserStateError value) error,
+    required TResult Function(UserStateData value) data,
+  }) {
+    return empty(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UserStateEmpty value)? empty,
+    TResult? Function(UserStateLoading value)? loading,
+    TResult? Function(UserStateError value)? error,
+    TResult? Function(UserStateData value)? data,
+  }) {
+    return empty?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UserStateEmpty value)? empty,
+    TResult Function(UserStateLoading value)? loading,
+    TResult Function(UserStateError value)? error,
+    TResult Function(UserStateData value)? data,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UserStateEmpty implements UserCubitState {
+  const factory UserStateEmpty() = _$UserStateEmptyImpl;
+}
+
+/// @nodoc
+abstract class _$$UserStateLoadingImplCopyWith<$Res> {
+  factory _$$UserStateLoadingImplCopyWith(_$UserStateLoadingImpl value,
+          $Res Function(_$UserStateLoadingImpl) then) =
+      __$$UserStateLoadingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$UserStateLoadingImplCopyWithImpl<$Res>
+    extends _$UserCubitStateCopyWithImpl<$Res, _$UserStateLoadingImpl>
+    implements _$$UserStateLoadingImplCopyWith<$Res> {
+  __$$UserStateLoadingImplCopyWithImpl(_$UserStateLoadingImpl _value,
+      $Res Function(_$UserStateLoadingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of UserCubitState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$UserStateLoadingImpl implements UserStateLoading {
+  const _$UserStateLoadingImpl();
 
   @override
   String toString() {
@@ -115,7 +238,7 @@ class _$LoadingImpl implements _Loading {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType && other is _$UserStateLoadingImpl);
   }
 
   @override
@@ -124,6 +247,7 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(UserProfile profile) data,
@@ -134,6 +258,7 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(String? message)? error,
     TResult? Function(UserProfile profile)? data,
@@ -144,6 +269,7 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(UserProfile profile)? data,
@@ -158,9 +284,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Error value) error,
-    required TResult Function(_Data value) data,
+    required TResult Function(UserStateEmpty value) empty,
+    required TResult Function(UserStateLoading value) loading,
+    required TResult Function(UserStateError value) error,
+    required TResult Function(UserStateData value) data,
   }) {
     return loading(this);
   }
@@ -168,9 +295,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Data value)? data,
+    TResult? Function(UserStateEmpty value)? empty,
+    TResult? Function(UserStateLoading value)? loading,
+    TResult? Function(UserStateError value)? error,
+    TResult? Function(UserStateData value)? data,
   }) {
     return loading?.call(this);
   }
@@ -178,9 +306,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
-    TResult Function(_Data value)? data,
+    TResult Function(UserStateEmpty value)? empty,
+    TResult Function(UserStateLoading value)? loading,
+    TResult Function(UserStateError value)? error,
+    TResult Function(UserStateData value)? data,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -190,25 +319,25 @@ class _$LoadingImpl implements _Loading {
   }
 }
 
-abstract class _Loading implements UserCubitState {
-  const factory _Loading() = _$LoadingImpl;
+abstract class UserStateLoading implements UserCubitState {
+  const factory UserStateLoading() = _$UserStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
+abstract class _$$UserStateErrorImplCopyWith<$Res> {
+  factory _$$UserStateErrorImplCopyWith(_$UserStateErrorImpl value,
+          $Res Function(_$UserStateErrorImpl) then) =
+      __$$UserStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? message});
 }
 
 /// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$UserCubitStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+class __$$UserStateErrorImplCopyWithImpl<$Res>
+    extends _$UserCubitStateCopyWithImpl<$Res, _$UserStateErrorImpl>
+    implements _$$UserStateErrorImplCopyWith<$Res> {
+  __$$UserStateErrorImplCopyWithImpl(
+      _$UserStateErrorImpl _value, $Res Function(_$UserStateErrorImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UserCubitState
@@ -218,7 +347,7 @@ class __$$ErrorImplCopyWithImpl<$Res>
   $Res call({
     Object? message = freezed,
   }) {
-    return _then(_$ErrorImpl(
+    return _then(_$UserStateErrorImpl(
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -229,8 +358,8 @@ class __$$ErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl({this.message});
+class _$UserStateErrorImpl implements UserStateError {
+  const _$UserStateErrorImpl({this.message});
 
   @override
   final String? message;
@@ -244,7 +373,7 @@ class _$ErrorImpl implements _Error {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
+            other is _$UserStateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -256,12 +385,14 @@ class _$ErrorImpl implements _Error {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
+  _$$UserStateErrorImplCopyWith<_$UserStateErrorImpl> get copyWith =>
+      __$$UserStateErrorImplCopyWithImpl<_$UserStateErrorImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(UserProfile profile) data,
@@ -272,6 +403,7 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(String? message)? error,
     TResult? Function(UserProfile profile)? data,
@@ -282,6 +414,7 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(UserProfile profile)? data,
@@ -296,9 +429,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Error value) error,
-    required TResult Function(_Data value) data,
+    required TResult Function(UserStateEmpty value) empty,
+    required TResult Function(UserStateLoading value) loading,
+    required TResult Function(UserStateError value) error,
+    required TResult Function(UserStateData value) data,
   }) {
     return error(this);
   }
@@ -306,9 +440,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Data value)? data,
+    TResult? Function(UserStateEmpty value)? empty,
+    TResult? Function(UserStateLoading value)? loading,
+    TResult? Function(UserStateError value)? error,
+    TResult? Function(UserStateData value)? data,
   }) {
     return error?.call(this);
   }
@@ -316,9 +451,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
-    TResult Function(_Data value)? data,
+    TResult Function(UserStateEmpty value)? empty,
+    TResult Function(UserStateLoading value)? loading,
+    TResult Function(UserStateError value)? error,
+    TResult Function(UserStateData value)? data,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -328,23 +464,23 @@ class _$ErrorImpl implements _Error {
   }
 }
 
-abstract class _Error implements UserCubitState {
-  const factory _Error({final String? message}) = _$ErrorImpl;
+abstract class UserStateError implements UserCubitState {
+  const factory UserStateError({final String? message}) = _$UserStateErrorImpl;
 
   String? get message;
 
   /// Create a copy of UserCubitState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+  _$$UserStateErrorImplCopyWith<_$UserStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DataImplCopyWith<$Res> {
-  factory _$$DataImplCopyWith(
-          _$DataImpl value, $Res Function(_$DataImpl) then) =
-      __$$DataImplCopyWithImpl<$Res>;
+abstract class _$$UserStateDataImplCopyWith<$Res> {
+  factory _$$UserStateDataImplCopyWith(
+          _$UserStateDataImpl value, $Res Function(_$UserStateDataImpl) then) =
+      __$$UserStateDataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({UserProfile profile});
 
@@ -352,10 +488,11 @@ abstract class _$$DataImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$DataImplCopyWithImpl<$Res>
-    extends _$UserCubitStateCopyWithImpl<$Res, _$DataImpl>
-    implements _$$DataImplCopyWith<$Res> {
-  __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
+class __$$UserStateDataImplCopyWithImpl<$Res>
+    extends _$UserCubitStateCopyWithImpl<$Res, _$UserStateDataImpl>
+    implements _$$UserStateDataImplCopyWith<$Res> {
+  __$$UserStateDataImplCopyWithImpl(
+      _$UserStateDataImpl _value, $Res Function(_$UserStateDataImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UserCubitState
@@ -365,7 +502,7 @@ class __$$DataImplCopyWithImpl<$Res>
   $Res call({
     Object? profile = null,
   }) {
-    return _then(_$DataImpl(
+    return _then(_$UserStateDataImpl(
       profile: null == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
@@ -386,8 +523,8 @@ class __$$DataImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DataImpl implements _Data {
-  const _$DataImpl({required this.profile});
+class _$UserStateDataImpl implements UserStateData {
+  const _$UserStateDataImpl({required this.profile});
 
   @override
   final UserProfile profile;
@@ -401,7 +538,7 @@ class _$DataImpl implements _Data {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DataImpl &&
+            other is _$UserStateDataImpl &&
             (identical(other.profile, profile) || other.profile == profile));
   }
 
@@ -413,12 +550,13 @@ class _$DataImpl implements _Data {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
-      __$$DataImplCopyWithImpl<_$DataImpl>(this, _$identity);
+  _$$UserStateDataImplCopyWith<_$UserStateDataImpl> get copyWith =>
+      __$$UserStateDataImplCopyWithImpl<_$UserStateDataImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(UserProfile profile) data,
@@ -429,6 +567,7 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(String? message)? error,
     TResult? Function(UserProfile profile)? data,
@@ -439,6 +578,7 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(UserProfile profile)? data,
@@ -453,9 +593,10 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Error value) error,
-    required TResult Function(_Data value) data,
+    required TResult Function(UserStateEmpty value) empty,
+    required TResult Function(UserStateLoading value) loading,
+    required TResult Function(UserStateError value) error,
+    required TResult Function(UserStateData value) data,
   }) {
     return data(this);
   }
@@ -463,9 +604,10 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Error value)? error,
-    TResult? Function(_Data value)? data,
+    TResult? Function(UserStateEmpty value)? empty,
+    TResult? Function(UserStateLoading value)? loading,
+    TResult? Function(UserStateError value)? error,
+    TResult? Function(UserStateData value)? data,
   }) {
     return data?.call(this);
   }
@@ -473,9 +615,10 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
-    TResult Function(_Data value)? data,
+    TResult Function(UserStateEmpty value)? empty,
+    TResult Function(UserStateLoading value)? loading,
+    TResult Function(UserStateError value)? error,
+    TResult Function(UserStateData value)? data,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -485,14 +628,15 @@ class _$DataImpl implements _Data {
   }
 }
 
-abstract class _Data implements UserCubitState {
-  const factory _Data({required final UserProfile profile}) = _$DataImpl;
+abstract class UserStateData implements UserCubitState {
+  const factory UserStateData({required final UserProfile profile}) =
+      _$UserStateDataImpl;
 
   UserProfile get profile;
 
   /// Create a copy of UserCubitState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
+  _$$UserStateDataImplCopyWith<_$UserStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

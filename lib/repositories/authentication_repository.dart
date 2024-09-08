@@ -87,7 +87,7 @@ class AuthenticationRepository {
 
   Stream<AppUser?> get user {
     return _firebaseAuth.authStateChanges().map((User? firebaseUser) {
-      return firebaseUser?.toAppUser;
+      return _currentUser = firebaseUser?.toAppUser;
     });
   }
 

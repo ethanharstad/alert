@@ -1,7 +1,5 @@
-import 'package:alert/blocs/app_bloc.dart';
 import 'package:alert/widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppScaffold extends StatelessWidget {
   final String title;
@@ -19,16 +17,14 @@ class AppScaffold extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
         actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-                icon: const Icon(Icons.person_sharp),
-              );
-            }
-          )
+          Builder(builder: (context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              icon: const Icon(Icons.person_sharp),
+            );
+          })
         ],
       ),
       endDrawer: const AppDrawer(),

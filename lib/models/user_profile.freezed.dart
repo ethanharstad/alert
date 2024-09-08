@@ -22,6 +22,7 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
 mixin _$UserProfile {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
 
   /// Serializes this UserProfile to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +40,7 @@ abstract class $UserProfileCopyWith<$Res> {
           UserProfile value, $Res Function(UserProfile) then) =
       _$UserProfileCopyWithImpl<$Res, UserProfile>;
   @useResult
-  $Res call({String id, String name});
+  $Res call({String id, String name, String email});
 }
 
 /// @nodoc
@@ -59,6 +60,7 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? email = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -68,6 +70,10 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -81,7 +87,7 @@ abstract class _$$UserProfileImplCopyWith<$Res>
       __$$UserProfileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name});
+  $Res call({String id, String name, String email});
 }
 
 /// @nodoc
@@ -99,6 +105,7 @@ class __$$UserProfileImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? email = null,
   }) {
     return _then(_$UserProfileImpl(
       id: null == id
@@ -109,6 +116,10 @@ class __$$UserProfileImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -116,7 +127,8 @@ class __$$UserProfileImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserProfileImpl implements _UserProfile {
-  const _$UserProfileImpl({required this.id, required this.name});
+  const _$UserProfileImpl(
+      {required this.id, required this.name, required this.email});
 
   factory _$UserProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserProfileImplFromJson(json);
@@ -125,10 +137,12 @@ class _$UserProfileImpl implements _UserProfile {
   final String id;
   @override
   final String name;
+  @override
+  final String email;
 
   @override
   String toString() {
-    return 'UserProfile(id: $id, name: $name)';
+    return 'UserProfile(id: $id, name: $name, email: $email)';
   }
 
   @override
@@ -137,12 +151,13 @@ class _$UserProfileImpl implements _UserProfile {
         (other.runtimeType == runtimeType &&
             other is _$UserProfileImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, name, email);
 
   /// Create a copy of UserProfile
   /// with the given fields replaced by the non-null parameter values.
@@ -163,7 +178,8 @@ class _$UserProfileImpl implements _UserProfile {
 abstract class _UserProfile implements UserProfile {
   const factory _UserProfile(
       {required final String id,
-      required final String name}) = _$UserProfileImpl;
+      required final String name,
+      required final String email}) = _$UserProfileImpl;
 
   factory _UserProfile.fromJson(Map<String, dynamic> json) =
       _$UserProfileImpl.fromJson;
@@ -172,6 +188,8 @@ abstract class _UserProfile implements UserProfile {
   String get id;
   @override
   String get name;
+  @override
+  String get email;
 
   /// Create a copy of UserProfile
   /// with the given fields replaced by the non-null parameter values.
