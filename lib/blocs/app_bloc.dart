@@ -24,7 +24,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     return emit.onEach(
       _authenticationRepository.user,
       onData: (AppUser? user) {
-        if(user != null) {
+        if (user != null) {
           emit(AppState.ready(user));
           return;
         }
