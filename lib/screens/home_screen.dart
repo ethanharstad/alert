@@ -1,6 +1,7 @@
 import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/widgets/app_scaffold.dart';
 import 'package:alert/widgets/home_tile.dart';
+import 'package:alert/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,6 +57,7 @@ class HomeScreen extends StatelessWidget {
   Widget eventWidget(BuildContext context, OrganizationBlocData state) {
     return AppScaffold(
       title: state.selectedOrganization!.name,
+      bottomNavigationBar: const NavBar(),
       body: GridView.extent(
         maxCrossAxisExtent: 300,
         mainAxisSpacing: 16.0,

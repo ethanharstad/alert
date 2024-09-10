@@ -1,13 +1,16 @@
 import 'package:alert/widgets/app_drawer.dart';
+import 'package:alert/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class AppScaffold extends StatelessWidget {
   final String title;
   final Widget body;
+  final Widget? bottomNavigationBar;
 
   const AppScaffold({
     required this.title,
     required this.body,
+    this.bottomNavigationBar,
     super.key,
   });
 
@@ -32,22 +35,7 @@ class AppScaffold extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: body,
       ),
-      bottomNavigationBar: NavigationBar(
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.format_list_bulleted),
-            label: 'Incidents',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-      ),
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }

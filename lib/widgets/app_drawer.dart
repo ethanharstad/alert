@@ -27,7 +27,7 @@ class AppDrawer extends StatelessWidget {
                   if(selectedOrganization != null) {
                     return ListTile(
                       leading: const Icon(Icons.group),
-                      title: Text(selectedOrganization!.name),
+                      title: Text(selectedOrganization.name),
                     );
                   }
                 default:
