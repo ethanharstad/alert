@@ -1,4 +1,5 @@
 import 'package:alert/blocs/app_bloc.dart';
+import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/blocs/user_cubit.dart';
 import 'package:alert/repositories/authentication_repository.dart';
 import 'package:alert/widgets/user_profile_header.dart';
@@ -15,8 +16,24 @@ class AppDrawer extends StatelessWidget {
         children: [
           BlocProvider(
             lazy: false,
-            create: (_) => UserCubit(authRepository: context.read<AuthenticationRepository>()),
+            create: (_) => UserCubit(
+                authRepository: context.read<AuthenticationRepository>()),
             child: const UserProfileHeader(),
+          ),
+          BlocBuilder<OrganizationBloc, OrganizationBlocState>(
+            builder: (BuildContext context, OrganizationBlocState state) {
+              switch(state) {
+                case OrganizationBlocData(:final selectedOrganization):
+                  if(selectedOrganization != null) {
+                    return ListTile(
+                      leading: const Icon(Icons.group),
+                      title: Text(selectedOrganization!.name),
+                    );
+                  }
+                default:
+              }
+              return const SizedBox.shrink();
+            },
           ),
           ListTile(
             leading: const Icon(Icons.logout),

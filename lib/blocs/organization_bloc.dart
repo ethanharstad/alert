@@ -63,15 +63,18 @@ class OrganizationBloc extends Cubit<OrganizationBlocState> {
   }
 
   void organizationsUpdated(QuerySnapshot<Organization> organizationsSnapshot) {
+    // Handle no orgs
     if (organizationsSnapshot.size == 0) {
       emit(const OrganizationBlocState.empty());
       return;
     }
+    // Get org objects from snapshot
     final List<Organization> orgs = organizationsSnapshot.docs
         .map(
           (QueryDocumentSnapshot<Organization> x) => x.data(),
         )
         .toList(growable: false);
+    // Make sure selected org is still viable
     Organization? selected;
     switch (state) {
       case OrganizationBlocData(:final selectedOrganization):
@@ -79,9 +82,26 @@ class OrganizationBloc extends Cubit<OrganizationBlocState> {
             orgs.contains(selectedOrganization) ? selectedOrganization : null;
       default:
     }
+    // See if we can default select an org
+    if(selected == null && orgs.length == 1) {
+      selected = orgs.first;
+    }
     emit(OrganizationBlocState.data(
       organizations: orgs,
       selectedOrganization: selected,
     ));
+  }
+
+  void organizationSelected(Organization organization) {
+    switch (state) {
+      case OrganizationBlocData(:final organizations):
+        if (organizations.contains(organization)) {
+          emit(OrganizationBlocState.data(
+            organizations: organizations,
+            selectedOrganization: organization,
+          ));
+        }
+      default:
+    }
   }
 }

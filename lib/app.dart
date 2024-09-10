@@ -1,6 +1,9 @@
 import 'package:alert/app_router.dart';
 import 'package:alert/blocs/app_bloc.dart';
+import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/repositories/authentication_repository.dart';
+import 'package:alert/repositories/organization_repository.dart';
+import 'package:alert/repositories/user_access_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,16 +17,38 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _authenticationRepository,
-      child: BlocProvider(
-        lazy: false,
-        create: (_) =>
-            AppBloc(authenticationRepository: _authenticationRepository)
-              ..add(const UserSubscriptionRequested()),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(
+          value: _authenticationRepository,
+        ),
+        RepositoryProvider<UserAccessRepository>(
+          create: (BuildContext context) => UserAccessRepository(),
+        ),
+        RepositoryProvider<OrganizationRepository>(
+          create: (BuildContext context) => OrganizationRepository(),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AppBloc>(
+            lazy: false,
+            create: (_) =>
+                AppBloc(authenticationRepository: _authenticationRepository)
+                  ..add(const UserSubscriptionRequested()),
+          ),
+          BlocProvider<OrganizationBloc>(
+            lazy: false,
+            create: (BuildContext context) => OrganizationBloc(
+              authenticationRepository: context.read<AuthenticationRepository>(),
+              organizationRepository: context.read<OrganizationRepository>(),
+              userAccessRepository: context.read<UserAccessRepository>(),
+            ),
+          ),
+        ],
         child: BlocListener<AppBloc, AppState>(
           listener: (BuildContext context, AppState state) {
-            if(state is Unauthenticated) {
+            if (state is Unauthenticated) {
               appRouter.goNamed('login');
             }
           },
