@@ -33,7 +33,7 @@ class UserCubit extends Cubit<UserCubitState> {
       return emit(const UserCubitState.empty());
     }
     emit(const UserCubitState.loading());
-    _listener = _profileRepository.getUserProfileStream(user.id).listen(profileUpdated);
+    _listener = _profileRepository.getUserProfile(user.id).listen(profileUpdated);
   }
   
   void profileUpdated(DocumentSnapshot<UserProfile> snapshot) {

@@ -1,36 +1,36 @@
-import 'package:alert/models/user_profile.dart';
+import 'package:alert/models/user_access.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserProfileRepository {
-  UserProfileRepository._();
+class UserAccessRepository {
+  UserAccessRepository._();
 
-  static final UserProfileRepository _instance = UserProfileRepository._();
+  static final UserAccessRepository _instance = UserAccessRepository._();
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
-  static final CollectionReference<UserProfile> _collection =
-      _db.collection('users').withConverter(
+  static final CollectionReference<UserAccess> _collection =
+      _db.collection('user_organization').withConverter(
             fromFirestore: _fromFirestore,
             toFirestore: _toFirestore,
           );
 
-  factory UserProfileRepository() {
+  factory UserAccessRepository() {
     return _instance;
   }
-
-  Stream<DocumentSnapshot<UserProfile>> getUserProfile(String id) {
-    return _collection.doc(id).snapshots();
+  
+  Stream<QuerySnapshot<UserAccess>> getUserAccess(String id) {
+    return _collection.where("userId", isEqualTo: id).snapshots();
   }
 
-  static UserProfile _fromFirestore(
+  static UserAccess _fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final Map<String, dynamic> json = snapshot.data()!;
     json['id'] = snapshot.id;
-    return UserProfile.fromJson(json);
+    return UserAccess.fromJson(json);
   }
 
   static Map<String, Object?> _toFirestore(
-    UserProfile value,
+    UserAccess value,
     SetOptions? options,
   ) {
     final Map<String, dynamic> json = value.toJson();
