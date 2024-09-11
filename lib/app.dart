@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
                   ..add(const UserSubscriptionRequested()),
           ),
           BlocProvider<OrganizationBloc>(
-            lazy: false,
             create: (BuildContext context) => OrganizationBloc(
               authenticationRepository: context.read<AuthenticationRepository>(),
               organizationRepository: context.read<OrganizationRepository>(),
@@ -55,7 +54,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp.router(
             title: 'Flutter Demo',
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
               useMaterial3: true,
             ),
             routerConfig: appRouter,

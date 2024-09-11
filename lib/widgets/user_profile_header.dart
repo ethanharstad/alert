@@ -14,6 +14,9 @@ class UserProfileHeader extends StatelessWidget {
           return UserAccountsDrawerHeader(
             accountName: Text(profile.name),
             accountEmail: Text(profile.email),
+            currentAccountPicture: CircleAvatar(
+              child: Text(profile.name.split(" ").map((x) => x[0]).join()),
+            ),
           );
         case UserStateEmpty():
           return const DrawerHeader(child: Text('No User Profile'));
