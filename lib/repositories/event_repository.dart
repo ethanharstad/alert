@@ -16,10 +16,10 @@ class EventRepository {
     return _instance;
   }
 
-  // void persistEvent(Event event) {
-  //   final doc = _getCollectionReference(organizationId).doc(event.id);
-  //   doc.set(event);
-  // }
+  void persistEvent(Event event) {
+    final doc = _collectionReference.doc(event.id);
+    doc.set(event);
+  }
 
   Stream<QuerySnapshot<Event>> getEvents(String organizationId) {
     return _collectionReference

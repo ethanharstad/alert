@@ -3,6 +3,7 @@ import 'package:alert/blocs/app_bloc.dart';
 import 'package:alert/blocs/event_bloc.dart';
 import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/repositories/authentication_repository.dart';
+import 'package:alert/repositories/event_repository.dart';
 import 'package:alert/repositories/organization_repository.dart';
 import 'package:alert/repositories/user_access_repository.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<OrganizationRepository>(
           create: (BuildContext context) => OrganizationRepository(),
         ),
+        RepositoryProvider<EventRepository>(
+          create: (BuildContext context) => EventRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -50,6 +54,7 @@ class MyApp extends StatelessWidget {
         child: BlocProvider<EventBloc>(
           create: (BuildContext context) => EventBloc(
             organizationBloc: context.read<OrganizationBloc>(),
+            eventRepository: context.read<EventRepository>(),
           ),
           child: BlocListener<AppBloc, AppState>(
             listener: (BuildContext context, AppState state) {

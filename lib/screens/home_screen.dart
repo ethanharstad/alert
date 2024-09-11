@@ -1,4 +1,6 @@
 import 'package:alert/blocs/organization_bloc.dart';
+import 'package:alert/models/event.dart';
+import 'package:alert/repositories/event_repository.dart';
 import 'package:alert/widgets/app_scaffold.dart';
 import 'package:alert/widgets/home_tile.dart';
 import 'package:alert/widgets/nav_bar.dart';
@@ -67,34 +69,62 @@ class HomeScreen extends StatelessWidget {
             color: Colors.red,
             title: 'Lockdown',
             icon: Icons.lock,
-            onTap: () {},
+            onTap: () => createEvent(
+              context: context,
+              eventType: 'lockdown',
+            ),
           ),
           HomeTile(
             color: Colors.blue,
             title: 'Secure',
             icon: Icons.front_hand,
-            onTap: () {},
+            onTap: () => createEvent(
+              context: context,
+              eventType: 'secure',
+            ),
           ),
           HomeTile(
             color: Colors.orange,
             title: 'Shelter',
             icon: Icons.home,
-            onTap: () {},
+            onTap: () => createEvent(
+              context: context,
+              eventType: 'shelter',
+            ),
           ),
           HomeTile(
             color: Colors.green,
             title: 'Evacuate',
             icon: Icons.directions_walk,
-            onTap: () {},
+            onTap: () => createEvent(
+              context: context,
+              eventType: 'evacuate',
+            ),
           ),
           HomeTile(
             color: Colors.deepPurpleAccent,
             title: 'Hold',
             icon: Icons.door_front_door,
-            onTap: () {},
+            onTap: () => createEvent(
+              context: context,
+              eventType: 'hold',
+            ),
           ),
         ],
       ),
     );
+  }
+
+  void createEvent({required BuildContext context, required String eventType}) {
+    final event = Event(
+      organizationId:
+          (context.read<OrganizationBloc>().state as OrganizationBlocData)
+              .selectedOrganization!
+              .id!,
+      eventType: eventType,
+      openedAt: DateTime.now(),
+      title: eventType,
+    );
+    context.read<EventRepository>().persistEvent(event);
   }
 }

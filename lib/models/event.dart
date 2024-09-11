@@ -7,6 +7,8 @@ part 'event.g.dart';
 
 @freezed
 class Event with _$Event {
+  const Event._();
+
   const factory Event({
     String? id,
     required String organizationId,
@@ -18,4 +20,10 @@ class Event with _$Event {
   }) = _Event;
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
+
+  bool get isOpen => closedAt == null || closedAt!.isAfter(DateTime.now());
+
+  bool get isClosed => !isOpen;
+
+  bool get isScheduled => openedAt.isAfter(DateTime.now());
 }
