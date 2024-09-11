@@ -1,6 +1,7 @@
 import 'package:alert/blocs/group_bloc.dart';
 import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/widgets/app_scaffold.dart';
+import 'package:alert/widgets/group_tree_card.dart';
 import 'package:alert/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,13 +63,11 @@ class OrganizationDetailScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
             break;
-          case GroupBlocData(:final groups):
+          case GroupBlocData(:final tree):
             body = ListView(
               children: [
-                for(final group in groups)
-                  ListTile(
-                    title: Text(group.name),
-                  ),
+                for(final groupTree in tree!.children)
+                  GroupTreeCard(tree: groupTree),
               ],
             );
             break;

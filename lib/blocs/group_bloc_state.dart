@@ -12,5 +12,6 @@ sealed class GroupBlocState with _$GroupBlocState {
 
   const factory GroupBlocState.data({
     required List<Group> groups,
+    GroupTree? tree,
 }) = GroupBlocData;
 }

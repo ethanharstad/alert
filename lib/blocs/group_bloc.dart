@@ -17,8 +17,9 @@ class GroupBloc extends Cubit<GroupBlocState> {
     GroupRepository? groupRepository,
   })  : _groupRepository = groupRepository ?? GroupRepository(),
         super(const GroupBlocState.empty()) {
-    _organizationListener = organizationBloc.stream.listen(organizationChanged);
-    organizationChanged(organizationBloc.state);
+    _organizationListener =
+        organizationBloc.stream.listen(_organizationChanged);
+    _organizationChanged(organizationBloc.state);
   }
 
   final GroupRepository _groupRepository;
@@ -32,7 +33,7 @@ class GroupBloc extends Cubit<GroupBlocState> {
     return super.close();
   }
 
-  void organizationChanged(OrganizationBlocState state) {
+  void _organizationChanged(OrganizationBlocState state) {
     switch (state) {
       case OrganizationBlocData(:final selectedOrganization):
         if (selectedOrganization == null) {
@@ -42,23 +43,48 @@ class GroupBloc extends Cubit<GroupBlocState> {
         emit(const GroupBlocState.loading());
         _groupListener = _groupRepository
             .getGroups(selectedOrganization.id!)
-            .listen(groupsUpdated);
+            .listen(_groupsUpdated);
       default:
     }
   }
 
-  void groupsUpdated(QuerySnapshot<Group> snapshot) {
+  void _groupsUpdated(QuerySnapshot<Group> snapshot) {
     if (snapshot.size == 0) {
       return emit(const GroupBlocState.empty());
     }
+    final groups = snapshot.docs
+        .map(
+          (QueryDocumentSnapshot<Group> docSnapshot) => docSnapshot.data(),
+        )
+        .toList(growable: false);
     return emit(
       GroupBlocState.data(
-        groups: snapshot.docs
-            .map(
-              (QueryDocumentSnapshot<Group> docSnapshot) => docSnapshot.data(),
-            )
-            .toList(growable: false),
+        groups: groups,
+        tree: _buildTree(groups),
       ),
     );
   }
+
+  GroupTree _buildTree(List<Group> groups) {
+    GroupTree root = GroupTree();
+    final Map<String, GroupTree> cache = {
+      for (final group in groups) group.id!: GroupTree(root: group),
+    };
+    for (final group in groups) {
+      final node = cache[group.id]!;
+      GroupTree parent = group.parentId != null ? cache[group.parentId]! : root;
+      parent.children.add(node);
+    }
+    return root;
+  }
+}
+
+class GroupTree {
+  GroupTree({
+    this.root,
+    List<GroupTree>? children,
+  }) : children = children ?? List<GroupTree>.empty(growable: true);
+
+  final Group? root;
+  final List<GroupTree> children;
 }
