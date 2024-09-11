@@ -1,3 +1,4 @@
+import 'package:alert/utils/timestamp_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'event.freezed.dart';
@@ -10,8 +11,8 @@ class Event with _$Event {
     String? id,
     required String organizationId,
     required String eventType,
-    required DateTime openedAt,
-    DateTime? closedAt,
+    @TimestampConverter() required DateTime openedAt,
+    @TimestampNullableConverter() DateTime? closedAt,
     String? title,
     String? notes,
   }) = _Event;

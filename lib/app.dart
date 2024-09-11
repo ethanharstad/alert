@@ -1,5 +1,6 @@
 import 'package:alert/app_router.dart';
 import 'package:alert/blocs/app_bloc.dart';
+import 'package:alert/blocs/event_bloc.dart';
 import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/repositories/authentication_repository.dart';
 import 'package:alert/repositories/organization_repository.dart';
@@ -39,25 +40,31 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<OrganizationBloc>(
             create: (BuildContext context) => OrganizationBloc(
-              authenticationRepository: context.read<AuthenticationRepository>(),
+              authenticationRepository:
+                  context.read<AuthenticationRepository>(),
               organizationRepository: context.read<OrganizationRepository>(),
               userAccessRepository: context.read<UserAccessRepository>(),
             ),
           ),
         ],
-        child: BlocListener<AppBloc, AppState>(
-          listener: (BuildContext context, AppState state) {
-            if (state is Unauthenticated) {
-              appRouter.goNamed('login');
-            }
-          },
-          child: MaterialApp.router(
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
-              useMaterial3: true,
+        child: BlocProvider<EventBloc>(
+          create: (BuildContext context) => EventBloc(
+            organizationBloc: context.read<OrganizationBloc>(),
+          ),
+          child: BlocListener<AppBloc, AppState>(
+            listener: (BuildContext context, AppState state) {
+              if (state is Unauthenticated) {
+                appRouter.goNamed('login');
+              }
+            },
+            child: MaterialApp.router(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+                useMaterial3: true,
+              ),
+              routerConfig: appRouter,
             ),
-            routerConfig: appRouter,
           ),
         ),
       ),

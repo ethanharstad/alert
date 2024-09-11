@@ -1,5 +1,4 @@
 import 'package:alert/widgets/app_drawer.dart';
-import 'package:alert/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class AppScaffold extends StatelessWidget {

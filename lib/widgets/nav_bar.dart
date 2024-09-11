@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 
 class _Destination {
@@ -57,7 +56,8 @@ class NavBar extends StatelessWidget {
 
   int _computeSelected(BuildContext context) {
     final String location = GoRouterState.of(context).name ?? '';
-    final match = destinations.indexWhere((final destination) => destination.routeName == location);
+    final match = destinations
+        .indexWhere((final destination) => destination.routeName == location);
     return match < 0 ? 0 : match;
   }
 }
