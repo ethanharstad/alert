@@ -25,9 +25,9 @@ const destinations = [
     routeName: "incidents",
   ),
   _Destination(
-    label: "Settings",
-    icon: Icon(Icons.settings),
-    routeName: "settings",
+    label: "Organization",
+    icon: Icon(Icons.groups),
+    routeName: "organization",
   ),
 ];
 

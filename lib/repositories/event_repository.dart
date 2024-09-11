@@ -16,9 +16,9 @@ class EventRepository {
     return _instance;
   }
 
-  void persistEvent(Event event) {
+  Future<void> persistEvent(Event event) {
     final doc = _collectionReference.doc(event.id);
-    doc.set(event);
+    return doc.set(event);
   }
 
   Stream<QuerySnapshot<Event>> getEvents(String organizationId) {

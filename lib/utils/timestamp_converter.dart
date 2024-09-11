@@ -11,11 +11,11 @@ class TimestampConverter implements JsonConverter<DateTime, dynamic> {
   Timestamp toJson(DateTime datetime) => Timestamp.fromDate(datetime);
 }
 
-class TimestampNullableConverter implements JsonConverter<DateTime?, dynamic?> {
+class TimestampNullableConverter implements JsonConverter<DateTime?, dynamic> {
   const TimestampNullableConverter();
 
   @override
-  DateTime? fromJson(dynamic? timestamp) => timestamp?.toDate();
+  DateTime? fromJson(dynamic timestamp) => timestamp?.toDate();
 
   @override
   Timestamp? toJson(DateTime? datetime) =>

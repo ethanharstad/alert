@@ -68,5 +68,6 @@ class IncidentsScreen extends StatelessWidget {
     if(event.isClosed) {
       return const Icon(Icons.check);
     }
+    return null;
   }
 }

@@ -2,6 +2,7 @@ import 'package:alert/blocs/app_bloc.dart';
 import 'package:alert/screens/home_screen.dart';
 import 'package:alert/screens/incidents_screen.dart';
 import 'package:alert/screens/login_screen.dart';
+import 'package:alert/screens/organization_detail_screen.dart';
 import 'package:alert/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,12 @@ final appRouter = GoRouter(
       name: 'incidents',
       builder: (BuildContext context, GoRouterState state) =>
           const IncidentsScreen(),
+    ),
+    GoRoute(
+      path: '/organization',
+      name: 'organization',
+      builder: (BuildContext context, GoRouterState state) =>
+          const OrganizationDetailScreen(),
     ),
   ],
 );

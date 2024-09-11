@@ -1,7 +1,7 @@
 part of 'event_bloc.dart';
 
 @freezed
-sealed class EventBlocState {
+sealed class EventBlocState with _$EventBlocState {
   const factory EventBlocState.error({
     String? message,
   }) = EventBlocError;

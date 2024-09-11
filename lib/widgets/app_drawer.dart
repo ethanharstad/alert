@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:alert/blocs/app_bloc.dart';
 import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/blocs/user_cubit.dart';
@@ -34,6 +35,11 @@ class AppDrawer extends StatelessWidget {
               }
               return const SizedBox.shrink();
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
+            onTap: () => context.goNamed('settings'),
           ),
           ListTile(
             leading: const Icon(Icons.logout),
