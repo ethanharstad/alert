@@ -1,4 +1,5 @@
 import 'package:alert/blocs/app_bloc.dart';
+import 'package:alert/screens/event_edit_screen.dart';
 import 'package:alert/screens/home_screen.dart';
 import 'package:alert/screens/incidents_screen.dart';
 import 'package:alert/screens/login_screen.dart';
@@ -31,24 +32,32 @@ final appRouter = GoRouter(
       name: 'home',
       builder: (BuildContext context, GoRouterState state) =>
           const HomeScreen(),
-    ),
-    GoRoute(
-      path: '/settings',
-      name: 'settings',
-      builder: (BuildContext context, GoRouterState state) =>
-          const SettingsScreen(),
-    ),
-    GoRoute(
-      path: '/incidents',
-      name: 'incidents',
-      builder: (BuildContext context, GoRouterState state) =>
-          const IncidentsScreen(),
-    ),
-    GoRoute(
-      path: '/organization',
-      name: 'organization',
-      builder: (BuildContext context, GoRouterState state) =>
-          const OrganizationDetailScreen(),
+      routes: [
+        GoRoute(
+          path: 'settings',
+          name: 'settings',
+          builder: (BuildContext context, GoRouterState state) =>
+              const SettingsScreen(),
+        ),
+        GoRoute(
+          path: 'incidents',
+          name: 'incidents',
+          builder: (BuildContext context, GoRouterState state) =>
+              const IncidentsScreen(),
+        ),
+        GoRoute(
+          path: 'organization',
+          name: 'organization',
+          builder: (BuildContext context, GoRouterState state) =>
+              const OrganizationDetailScreen(),
+        ),
+        GoRoute(
+          path: 'editEvent',
+          name: 'EditEvent',
+          builder: (BuildContext context, GoRouterState state) =>
+              const EventEditScreen(),
+        ),
+      ],
     ),
   ],
 );

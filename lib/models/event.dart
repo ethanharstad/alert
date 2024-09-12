@@ -17,6 +17,7 @@ class Event with _$Event {
     @TimestampNullableConverter() DateTime? closedAt,
     String? title,
     String? notes,
+    List<String>? groupIds,
   }) = _Event;
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);

@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/models/event.dart';
 import 'package:alert/repositories/event_repository.dart';
@@ -105,10 +106,7 @@ class HomeScreen extends StatelessWidget {
             color: Colors.deepPurpleAccent,
             title: 'Hold',
             icon: Icons.door_front_door,
-            onTap: () => createEvent(
-              context: context,
-              eventType: 'hold',
-            ),
+            onTap: () => context.goNamed("EditEvent"),
           ),
         ],
       ),
