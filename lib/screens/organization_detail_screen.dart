@@ -38,43 +38,38 @@ class OrganizationDetailScreen extends StatelessWidget {
   }
 
   Widget groupWidget(BuildContext context) {
-    return BlocProvider<GroupBloc>(
-      create: (BuildContext context) => GroupBloc(
-        organizationBloc: context.read<OrganizationBloc>(),
-      ),
-      child: BlocBuilder<GroupBloc, GroupBlocState>(
-          builder: (BuildContext context, GroupBlocState state) {
-        Widget body = const Center(
-          child: Text('No groups found.'),
-        );
-        switch (state) {
-          case GroupBlocError(:final message):
-            body = Center(
-              child: Column(
-                children: [
-                  const Text('Error loadings groups!'),
-                  if (message != null) Text(message),
-                ],
-              ),
-            );
-            break;
-          case GroupBlocLoading():
-            body = const Center(
-              child: CircularProgressIndicator(),
-            );
-            break;
-          case GroupBlocData(:final tree):
-            body = ListView(
+    return BlocBuilder<GroupBloc, GroupBlocState>(
+        builder: (BuildContext context, GroupBlocState state) {
+      Widget body = const Center(
+        child: Text('No groups found.'),
+      );
+      switch (state) {
+        case GroupBlocError(:final message):
+          body = Center(
+            child: Column(
               children: [
-                for(final groupTree in tree!.children)
-                  GroupTreeCard(tree: groupTree),
+                const Text('Error loadings groups!'),
+                if (message != null) Text(message),
               ],
-            );
-            break;
-          default:
-        }
-        return body;
-      }),
-    );
+            ),
+          );
+          break;
+        case GroupBlocLoading():
+          body = const Center(
+            child: CircularProgressIndicator(),
+          );
+          break;
+        case GroupBlocData(:final tree):
+          body = ListView(
+            children: [
+              for (final groupTree in tree!.children)
+                GroupTreeCard(tree: groupTree),
+            ],
+          );
+          break;
+        default:
+      }
+      return body;
+    });
   }
 }

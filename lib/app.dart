@@ -1,6 +1,7 @@
 import 'package:alert/app_router.dart';
 import 'package:alert/blocs/app_bloc.dart';
 import 'package:alert/blocs/event_bloc.dart';
+import 'package:alert/blocs/group_bloc.dart';
 import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/repositories/authentication_repository.dart';
 import 'package:alert/repositories/event_repository.dart';
@@ -51,11 +52,20 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ],
-        child: BlocProvider<EventBloc>(
-          create: (BuildContext context) => EventBloc(
-            organizationBloc: context.read<OrganizationBloc>(),
-            eventRepository: context.read<EventRepository>(),
-          ),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<EventBloc>(
+              create: (BuildContext context) => EventBloc(
+                organizationBloc: context.read<OrganizationBloc>(),
+                eventRepository: context.read<EventRepository>(),
+              ),
+            ),
+            BlocProvider<GroupBloc>(
+              create: (BuildContext context) => GroupBloc(
+                organizationBloc: context.read<OrganizationBloc>(),
+              ),
+            ),
+          ],
           child: BlocListener<AppBloc, AppState>(
             listener: (BuildContext context, AppState state) {
               if (state is Unauthenticated) {
