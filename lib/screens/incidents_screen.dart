@@ -4,6 +4,7 @@ import 'package:alert/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:alert/models/event.dart';
+import 'package:intl/intl.dart';
 
 class IncidentsScreen extends StatelessWidget {
   const IncidentsScreen({super.key});
@@ -48,7 +49,7 @@ class IncidentsScreen extends StatelessWidget {
                           title: event.title != null
                               ? Text(event.title!)
                               : null,
-                          subtitle: Text(event.openedAt.toIso8601String()),
+                          subtitle: Text(DateFormat.yMd().add_jms().format(event.openedAt)),
                           trailing: getTrailing(event),
                         ),
                     ],

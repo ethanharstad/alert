@@ -22,7 +22,7 @@ class Event with _$Event {
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
-  bool get isOpen => closedAt == null || closedAt!.isAfter(DateTime.now());
+  bool get isOpen => closedAt == null || (!isScheduled && closedAt!.isAfter(DateTime.now()));
 
   bool get isClosed => !isOpen;
 
