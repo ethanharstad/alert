@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
               }
             },
             child: MaterialApp.router(
-              title: 'Flutter Demo',
+              title: 'Alert App',
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
                 useMaterial3: true,
