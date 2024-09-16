@@ -163,6 +163,7 @@ class _TreeTile extends StatelessWidget {
           case EventEditBlocData(:final selections):
             return selections[tree.root!.id!];
           default:
+            return null;
         }
       },
       builder: (BuildContext context, bool? state) {

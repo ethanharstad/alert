@@ -18,8 +18,9 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
   }
 
   late final StreamSubscription<GroupBlocState> _groupListener;
-  Map<String, bool?> _selections = {};
-  Map<String, String?> _parents = {};
+  final Map<String, bool?> _selections = {};
+  final Map<String, String?> _parents = {};
+  final Map<String, List<String>> _children = {};
   GroupTree? _tree;
 
   void _groupsUpdated(GroupBlocState state) {
@@ -29,19 +30,24 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
       case GroupBlocError(:final message):
         return emit(EventEditBlocState.error(message: message));
       case GroupBlocEmpty():
-        return emit(
-            EventEditBlocState.data(tree: null, selections: _selections));
+        return emit(const EventEditBlocState.data(tree: null, selections: {}));
       case GroupBlocData(:final groups, :final tree):
         _tree = tree!;
         for (final group in groups) {
           _parents[group.id!] = group.parentId;
+          if(group.parentId !=null) {
+            if(_children.containsKey(group.parentId) == false) {
+              _children[group.parentId!] = [];
+            }
+            _children[group.parentId!]!.add(group.id!);
+          }
           if (_selections.containsKey(group.id) == false) {
             _selections[group.id!] = false;
           }
         }
-        return emit(EventEditBlocData(
+        return emit(EventEditBlocState.data(
           tree: _tree!,
-          selections: _selections,
+          selections: Map.from(_selections),
         ));
       default:
     }
@@ -51,15 +57,45 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
     required Group group,
     required bool value,
   }) {
-    print("groupSelectionUpdated: $group $value");
-    print("before $_selections");
     _selections[group.id!] = value;
-    print("after $_selections");
-    final newState =
-        (state as EventEditBlocData).copyWith(selections: _selections);
-    print("$state => $newState");
-    print(state == newState);
-    return emit(state);
+    _updateChildren(groupId: group.id!, value: value);
+    _updateParent(groupId: group.id!, value: value);
+    final newState = (state as EventEditBlocData)
+        .copyWith(selections: Map.from(_selections));
+    return emit(newState);
+  }
+
+  void _updateChildren({
+    required String groupId,
+    required bool value,
+}) {
+    if(_children[groupId] != null) {
+      for(final childId in _children[groupId]!) {
+        _selections[childId] = value;
+        _updateChildren(groupId: childId, value: value);
+      }
+    }
+  }
+
+  void _updateParent({
+    required String groupId,
+    required bool value,
+}) {
+    final parentId = _parents[groupId];
+    if(parentId != null) {
+      bool? parentValue = value;
+      final siblings = _children[parentId];
+      if(siblings != null) {
+        for(final siblingId in siblings) {
+          if(_selections[siblingId] != value) {
+            parentValue = null;
+            break;
+          }
+        }
+      }
+      _selections[parentId] = parentValue;
+      _updateParent(groupId: parentId, value: value);
+    }
   }
 
   @override
