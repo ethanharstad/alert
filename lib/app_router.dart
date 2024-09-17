@@ -55,7 +55,9 @@ final appRouter = GoRouter(
           path: 'editEvent',
           name: 'EditEvent',
           builder: (BuildContext context, GoRouterState state) =>
-              const EventEditScreen(),
+              EventEditScreen(
+            initialType: state.extra as String,
+          ),
         ),
       ],
     ),

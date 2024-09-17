@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:alert/blocs/group_bloc.dart';
 import 'package:alert/models/group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'event_edit_bloc.freezed.dart';
@@ -22,6 +23,7 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
   final Map<String, String?> _parents = {};
   final Map<String, List<String>> _children = {};
   GroupTree? _tree;
+  String? _selectedType;
 
   void _groupsUpdated(GroupBlocState state) {
     switch (state) {
@@ -30,13 +32,18 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
       case GroupBlocError(:final message):
         return emit(EventEditBlocState.error(message: message));
       case GroupBlocEmpty():
-        return emit(const EventEditBlocState.data(tree: null, selections: {}));
+        return emit(EventEditBlocState.data(
+          tree: null,
+          selections: {},
+          selectedType: TypeInput.dirty(value: _selectedType ?? ''),
+          openedAt: DateTime.now(),
+        ));
       case GroupBlocData(:final groups, :final tree):
         _tree = tree!;
         for (final group in groups) {
           _parents[group.id!] = group.parentId;
-          if(group.parentId !=null) {
-            if(_children.containsKey(group.parentId) == false) {
+          if (group.parentId != null) {
+            if (_children.containsKey(group.parentId) == false) {
               _children[group.parentId!] = [];
             }
             _children[group.parentId!]!.add(group.id!);
@@ -48,6 +55,7 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
         return emit(EventEditBlocState.data(
           tree: _tree!,
           selections: Map.from(_selections),
+          selectedType: TypeInput.dirty(value: _selectedType ?? ''),
         ));
       default:
     }
@@ -65,12 +73,57 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
     return emit(newState);
   }
 
+  void typeSelected(String? selectedType) {
+    _selectedType = selectedType;
+    if (state is EventEditBlocData) {
+      final data = state as EventEditBlocData;
+      final value = TypeInput.dirty(
+        value: selectedType ?? '',
+      );
+      return emit(
+        data.copyWith(
+          selectedType: value,
+          isValid: Formz.validate([value, data.title, data.notes]),
+        ),
+      );
+    }
+  }
+
+  void titleUpdated(String? value) {
+    if (state is EventEditBlocData) {
+      final data = state as EventEditBlocData;
+      final input = TitleInput.dirty(value: value ?? '');
+      emit(
+        data.copyWith(
+            title: input,
+            isValid: Formz.validate([data.selectedType, input, data.notes])),
+      );
+    }
+  }
+
+  void notesUpdated(String? value) {
+    if (state is EventEditBlocData) {
+      final data = state as EventEditBlocData;
+      final input = NotesInput.dirty(value: value ?? '');
+      emit(
+        (state as EventEditBlocData).copyWith(
+          notes: input,
+          isValid: Formz.validate([data.selectedType, data.title, input]),
+        ),
+      );
+    }
+  }
+
+  void startTimeUpdated(DateTime? value) {}
+
+  void endTimeUpdated(DateTime? value) {}
+
   void _updateChildren({
     required String groupId,
     required bool value,
-}) {
-    if(_children[groupId] != null) {
-      for(final childId in _children[groupId]!) {
+  }) {
+    if (_children[groupId] != null) {
+      for (final childId in _children[groupId]!) {
         _selections[childId] = value;
         _updateChildren(groupId: childId, value: value);
       }
@@ -80,14 +133,14 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
   void _updateParent({
     required String groupId,
     required bool value,
-}) {
+  }) {
     final parentId = _parents[groupId];
-    if(parentId != null) {
+    if (parentId != null) {
       bool? parentValue = value;
       final siblings = _children[parentId];
-      if(siblings != null) {
-        for(final siblingId in siblings) {
-          if(_selections[siblingId] != value) {
+      if (siblings != null) {
+        for (final siblingId in siblings) {
+          if (_selections[siblingId] != value) {
             parentValue = null;
             break;
           }
@@ -102,5 +155,72 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
   Future<void> close() {
     _groupListener.cancel();
     return super.close();
+  }
+}
+
+enum TypeInputError {
+  notValid,
+  empty,
+}
+
+class TypeInput extends FormzInput<String, TypeInputError> {
+  const TypeInput.pure() : super.pure('');
+
+  const TypeInput.dirty({String value = ''}) : super.dirty(value);
+
+  @override
+  TypeInputError? validator(String value) {
+    const List<String> eventTypes = [
+      'lockdown',
+      // 'secure',
+      'shelter',
+      'evacuate',
+      'hold',
+    ];
+    if (value == '') {
+      return TypeInputError.empty;
+    }
+    if (eventTypes.contains(value) == false) {
+      return TypeInputError.notValid;
+    }
+    return null;
+  }
+}
+
+enum TitleInputError {
+  tooShort,
+  invalidCharacters,
+  empty,
+}
+
+class TitleInput extends FormzInput<String, TitleInputError> {
+  const TitleInput.pure() : super.pure('');
+
+  const TitleInput.dirty({String value = ''}) : super.dirty(value);
+
+  @override
+  TitleInputError? validator(String value) {
+    if (value == '') {
+      return TitleInputError.empty;
+    }
+    if (value.length < 5) {
+      return TitleInputError.tooShort;
+    }
+    return null;
+  }
+}
+
+enum NotesInputError {
+  invalidCharacters,
+}
+
+class NotesInput extends FormzInput<String, NotesInputError> {
+  const NotesInput.pure() : super.pure('');
+
+  const NotesInput.dirty({String value = ''}) : super.dirty(value);
+
+  @override
+  NotesInputError? validator(String value) {
+    return null;
   }
 }

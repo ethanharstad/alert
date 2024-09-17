@@ -1,6 +1,7 @@
 import 'package:alert/blocs/event_edit_bloc.dart';
 import 'package:alert/blocs/group_bloc.dart';
 import 'package:alert/widgets/app_scaffold.dart';
+import 'package:alert/widgets/time_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +19,7 @@ class EventEditScreen extends StatelessWidget {
     return BlocProvider<EventEditBloc>(
       create: (_) => EventEditBloc(
         groupBloc: context.read<GroupBloc>(),
-      ),
+      )..typeSelected(initialType),
       child: BlocBuilder<EventEditBloc, EventEditBlocState>(
         builder: (BuildContext context, EventEditBlocState state) {
           Widget body = const Center(
@@ -32,76 +33,50 @@ class EventEditScreen extends StatelessWidget {
                   if (message != null) Text(message),
                 ],
               );
-            case EventEditBlocData(:final tree, :final selections):
+            case EventEditBlocData(
+                :final tree,
+                :final selectedType,
+                :final title,
+                :final notes,
+                :final openedAt,
+                :final closedAt,
+                :final isValid,
+              ):
               body = ListView(
                 children: [
-                  const DropdownMenu<String>(
-                    label: Text('Type'),
-                    dropdownMenuEntries: [
+                  DropdownMenu<String>(
+                    label: const Text('Type'),
+                    errorText: switch(selectedType.error) {
+                      null => null,
+                      TypeInputError.notValid => 'Must select a valid type.',
+                      TypeInputError.empty => 'Must select a type.',
+                    },
+                    initialSelection: selectedType.value,
+                    dropdownMenuEntries: const [
                       DropdownMenuEntry(value: 'lockdown', label: 'Lockdown'),
                       DropdownMenuEntry(value: 'secure', label: 'Secure'),
                       DropdownMenuEntry(value: 'shelter', label: 'Shelter'),
                       DropdownMenuEntry(value: 'evacuate', label: 'Evacuate'),
                       DropdownMenuEntry(value: 'hold', label: 'Hold'),
                     ],
+                    onSelected: (value) =>
+                        context.read<EventEditBloc>().typeSelected(value),
                   ),
-                  const TextField(
+                  TextField(
+                    onChanged: (value) =>
+                        context.read<EventEditBloc>().titleUpdated(value),
                     decoration: InputDecoration(
                       labelText: 'Title',
-                      helperText: 'Optional',
+                      errorText: switch(title.error) {
+                        null => null,
+                        TitleInputError.tooShort => 'Too short.',
+                        TitleInputError.invalidCharacters => 'Invalid characters.',
+                        TitleInputError.empty => 'Title cannot be empty.',
+                      },
                     ),
                   ),
-                  Row(
-                    children: [
-                      const Flexible(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Start Time',
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now()
-                                .subtract(const Duration(days: 365 * 5)),
-                            lastDate: DateTime.now()
-                                .add(const Duration(days: 365 * 5)),
-                          );
-                          if (context.mounted) {
-                            await showTimePicker(
-                              context: context,
-                              initialTime:
-                                  TimeOfDay.fromDateTime(DateTime.now()),
-                            );
-                          }
-                        },
-                        icon: const Icon(Icons.access_time),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text('Now'),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Flexible(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: 'End Time',
-                            helperText: 'Optional',
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.access_time)),
-                      TextButton(onPressed: () {}, child: const Text('Now')),
-                    ],
-                  ),
+                  TimeField(label: 'Start Time'),
+                  TimeField(label: 'End Time'),
                   Column(
                     children: [
                       if (tree != null)
@@ -109,11 +84,16 @@ class EventEditScreen extends StatelessWidget {
                           _TreeTile(tree: subtree),
                     ],
                   ),
-                  const TextField(
+                  TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    onChanged: (value) => context.read<EventEditBloc>().notesUpdated(value),
                     decoration: InputDecoration(
                       labelText: 'Notes',
+                      errorText: switch(notes.error) {
+                        null => null,
+                        NotesInputError.invalidCharacters => 'Invalid characters.',
+                      }
                     ),
                   ),
                   Align(
@@ -127,7 +107,7 @@ class EventEditScreen extends StatelessWidget {
                           child: const Text('Cancel'),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: isValid ? () {} : null,
                           child: const Text('Save'),
                         ),
                       ],

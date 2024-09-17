@@ -9,7 +9,13 @@ sealed class EventEditBlocState with _$EventEditBlocState {
   }) = EventEditBlocError;
 
   const factory EventEditBlocState.data({
+    @Default(false) bool isValid,
     required GroupTree? tree,
     required Map<String, bool?> selections,
+    @Default(TypeInput.pure()) TypeInput selectedType,
+    @Default(TitleInput.pure()) TitleInput title,
+    @Default(NotesInput.pure()) NotesInput notes,
+    DateTime? openedAt,
+    DateTime? closedAt,
   }) = EventEditBlocData;
 }

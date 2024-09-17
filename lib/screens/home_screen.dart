@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
             color: Colors.deepPurpleAccent,
             title: 'Hold',
             icon: Icons.door_front_door,
-            onTap: () => context.goNamed("EditEvent"),
+            onTap: () => context.goNamed("EditEvent", extra: "hold"),
           ),
         ],
       ),
