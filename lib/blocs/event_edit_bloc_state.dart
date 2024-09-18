@@ -15,7 +15,7 @@ sealed class EventEditBlocState with _$EventEditBlocState {
     @Default(TypeInput.pure()) TypeInput selectedType,
     @Default(TitleInput.pure()) TitleInput title,
     @Default(NotesInput.pure()) NotesInput notes,
-    DateTime? openedAt,
-    DateTime? closedAt,
+    @Default(TimeInput.pure(required: true)) TimeInput openedAt,
+    @Default(TimeInput.pure()) TimeInput closedAt,
   }) = EventEditBlocData;
 }

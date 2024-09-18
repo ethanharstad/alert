@@ -36,7 +36,6 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
           tree: null,
           selections: {},
           selectedType: TypeInput.dirty(value: _selectedType ?? ''),
-          openedAt: DateTime.now(),
         ));
       case GroupBlocData(:final groups, :final tree):
         _tree = tree!;
@@ -221,6 +220,38 @@ class NotesInput extends FormzInput<String, NotesInputError> {
 
   @override
   NotesInputError? validator(String value) {
+    return null;
+  }
+}
+
+enum TimeInputError {
+  empty,
+  before,
+  after,
+  parse,
+}
+
+class TimeInput extends FormzInput<String, TimeInputError> {
+  final bool required;
+
+  const TimeInput.pure({
+    this.required = false,
+  }) : super.pure('');
+
+  const TimeInput.dirty({
+    String value = '',
+    this.required = false,
+  }) : super.dirty(value);
+
+  @override
+  TimeInputError? validator(String value) {
+    if (required && value.isEmpty) {
+      return TimeInputError.empty;
+    }
+    final parsed = DateTime.tryParse(value);
+    if (parsed == null) {
+      return TimeInputError.parse;
+    }
     return null;
   }
 }
