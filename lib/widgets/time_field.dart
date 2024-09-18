@@ -1,41 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
-
-enum TimeInputError {
-  empty,
-  parseError,
-}
-
-class TimeInput extends FormzInput<String, TimeInputError> {
-  const TimeInput.pure() : super.pure('');
-
-  const TimeInput.dirty({String value = ''}) : super.dirty(value);
-
-  @override
-  TimeInputError? validator(String value) {
-    final DateTime? parsed = DateTime.tryParse(value);
-    if (parsed == null) {
-      return TimeInputError.parseError;
-    }
-    return null;
-  }
-}
 
 class TimeField extends StatelessWidget {
   TimeField({
     required this.label,
     this.required = false,
-    this.before,
-    this.after,
+    this.onChanged,
+    this.errorText,
     super.key,
   });
 
   final String label;
   final TextEditingController _controller = TextEditingController();
   final bool required;
-  final DateTime? before;
-  final DateTime? after;
+  final Function(String?)? onChanged;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +26,9 @@ class TimeField extends StatelessWidget {
             decoration: InputDecoration(
               labelText: label,
               helperText: '1969-07-20 20:18:04',
+              errorText: errorText,
             ),
+            onChanged: setValue,
           ),
         ),
         IconButton(
@@ -81,12 +62,27 @@ class TimeField extends StatelessWidget {
     final dateTime =
         DateTime(date.year, date.month, date.day, time.hour, time.minute);
     final parsed = DateFormat.yMd().add_jms().format(dateTime);
-    _controller.text = parsed;
+    setValue(parsed);
   }
 
   void setNow() {
     final DateTime now = DateTime.now().toLocal();
     final parsed = DateFormat.yMd().add_jms().format(now);
-    _controller.text = parsed;
+    setValue(parsed);
+  }
+
+  void setValue(String value) {
+    // final currentOffset = _controller.selection.base.offset;
+    _controller.value = TextEditingValue(
+      text: value,
+      selection: TextSelection.fromPosition(
+        TextPosition(
+          offset: value.length,
+        ),
+      ),
+    );
+    if(onChanged != null) {
+      onChanged!(value);
+    }
   }
 }

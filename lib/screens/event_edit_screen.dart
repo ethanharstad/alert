@@ -46,7 +46,7 @@ class EventEditScreen extends StatelessWidget {
                 children: [
                   DropdownMenu<String>(
                     label: const Text('Type'),
-                    errorText: switch(selectedType.error) {
+                    errorText: switch (selectedType.error) {
                       null => null,
                       TypeInputError.notValid => 'Must select a valid type.',
                       TypeInputError.empty => 'Must select a type.',
@@ -67,16 +67,37 @@ class EventEditScreen extends StatelessWidget {
                         context.read<EventEditBloc>().titleUpdated(value),
                     decoration: InputDecoration(
                       labelText: 'Title',
-                      errorText: switch(title.error) {
+                      errorText: switch (title.error) {
                         null => null,
                         TitleInputError.tooShort => 'Too short.',
-                        TitleInputError.invalidCharacters => 'Invalid characters.',
+                        TitleInputError.invalidCharacters =>
+                          'Invalid characters.',
                         TitleInputError.empty => 'Title cannot be empty.',
                       },
                     ),
                   ),
-                  TimeField(label: 'Start Time'),
-                  TimeField(label: 'End Time'),
+                  TimeField(
+                    label: 'Start Time',
+                    onChanged: (value) => context.read<EventEditBloc>().startTimeUpdated(value),
+                    errorText: switch(openedAt.error) {
+                      null => null,
+                      TimeInputError.empty => 'Start time is required.',
+                      TimeInputError.before => 'Must be before X',
+                      TimeInputError.after => 'Must be after X',
+                      TimeInputError.parse => 'Use the correct format.',
+                    },
+                  ),
+                  TimeField(
+                    label: 'End Time',
+                    onChanged: (value) => context.read<EventEditBloc>().endTimeUpdated(value),
+                    errorText: switch(closedAt.error) {
+                      null => null,
+                      TimeInputError.empty => 'Start time is required.',
+                      TimeInputError.before => 'Must be before X',
+                      TimeInputError.after => 'Must be after X',
+                      TimeInputError.parse => 'Use the correct format.',
+                    },
+                  ),
                   Column(
                     children: [
                       if (tree != null)
@@ -87,14 +108,15 @@ class EventEditScreen extends StatelessWidget {
                   TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
-                    onChanged: (value) => context.read<EventEditBloc>().notesUpdated(value),
+                    onChanged: (value) =>
+                        context.read<EventEditBloc>().notesUpdated(value),
                     decoration: InputDecoration(
-                      labelText: 'Notes',
-                      errorText: switch(notes.error) {
-                        null => null,
-                        NotesInputError.invalidCharacters => 'Invalid characters.',
-                      }
-                    ),
+                        labelText: 'Notes',
+                        errorText: switch (notes.error) {
+                          null => null,
+                          NotesInputError.invalidCharacters =>
+                            'Invalid characters.',
+                        }),
                   ),
                   Align(
                     alignment: AlignmentDirectional.centerEnd,

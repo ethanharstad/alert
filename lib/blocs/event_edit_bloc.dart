@@ -82,7 +82,13 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
       return emit(
         data.copyWith(
           selectedType: value,
-          isValid: Formz.validate([value, data.title, data.notes]),
+          isValid: Formz.validate([
+            value,
+            data.title,
+            data.notes,
+            data.openedAt,
+            data.closedAt,
+          ]),
         ),
       );
     }
@@ -95,7 +101,13 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
       emit(
         data.copyWith(
             title: input,
-            isValid: Formz.validate([data.selectedType, input, data.notes])),
+            isValid: Formz.validate([
+              data.selectedType,
+              input,
+              data.notes,
+              data.openedAt,
+              data.closedAt,
+            ])),
       );
     }
   }
@@ -105,17 +117,61 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
       final data = state as EventEditBlocData;
       final input = NotesInput.dirty(value: value ?? '');
       emit(
-        (state as EventEditBlocData).copyWith(
+        data.copyWith(
           notes: input,
-          isValid: Formz.validate([data.selectedType, data.title, input]),
+          isValid: Formz.validate([
+            data.selectedType,
+            data.title,
+            input,
+            data.openedAt,
+            data.closedAt,
+          ]),
         ),
       );
     }
   }
 
-  void startTimeUpdated(DateTime? value) {}
+  void startTimeUpdated(String? value) {
+    print("startTimeUpdated:$value");
+    if (state is EventEditBlocData) {
+      final data = state as EventEditBlocData;
+      final input = TimeInput.dirty(value: value ?? '');
+      emit(
+        data.copyWith(
+          openedAt: input,
+          isValid: Formz.validate([
+            data.selectedType,
+            data.title,
+            data.notes,
+            input,
+            data.closedAt,
+          ]),
+        ),
+      );
+    }
+  }
 
-  void endTimeUpdated(DateTime? value) {}
+  void endTimeUpdated(String? value) {
+    if (state is EventEditBlocData) {
+      final data = state as EventEditBlocData;
+      final input = TimeInput.dirty(
+        value: value ?? '',
+        after: DateTime.tryParse(data.openedAt.value),
+      );
+      emit(
+        data.copyWith(
+          closedAt: input,
+          isValid: Formz.validate([
+            data.selectedType,
+            data.title,
+            data.notes,
+            data.openedAt,
+            input,
+          ]),
+        ),
+      );
+    }
+  }
 
   void _updateChildren({
     required String groupId,
@@ -233,20 +289,29 @@ enum TimeInputError {
 
 class TimeInput extends FormzInput<String, TimeInputError> {
   final bool required;
+  final DateTime? before;
+  final DateTime? after;
 
   const TimeInput.pure({
     this.required = false,
+    this.before,
+    this.after,
   }) : super.pure('');
 
   const TimeInput.dirty({
     String value = '',
     this.required = false,
+    this.before,
+    this.after,
   }) : super.dirty(value);
 
   @override
   TimeInputError? validator(String value) {
-    if (required && value.isEmpty) {
-      return TimeInputError.empty;
+    if (value.isEmpty) {
+      if (required) {
+        return TimeInputError.empty;
+      }
+      return null;
     }
     final parsed = DateTime.tryParse(value);
     if (parsed == null) {
