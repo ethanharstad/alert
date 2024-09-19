@@ -1,7 +1,17 @@
-# alert
+# Alert Application PoC
 
-A new Flutter project.
+## Firebase
 
-## Code Generation
+### Prerequisites
+
+Firebase CLI
+
+```bash
+npm install -g firebase-tools
+```
+
+## Flutter
+
+### Code Generation
 
 `dart run build_runner build`
