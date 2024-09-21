@@ -21,6 +21,7 @@ class TimeField extends StatefulWidget {
 
 class _TimeFieldState extends State<TimeField> {
   final TextEditingController _controller = TextEditingController();
+  final _helper = DateFormat.yMd().add_jms().format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class _TimeFieldState extends State<TimeField> {
             controller: _controller,
             decoration: InputDecoration(
               labelText: widget.label,
-              helperText: '1969-07-20 20:18:04',
+              helperText: _helper,
               errorText: widget.errorText,
             ),
             onChanged: setValue,
