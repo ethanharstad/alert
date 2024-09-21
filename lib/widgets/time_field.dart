@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TimeField extends StatelessWidget {
-  TimeField({
+class TimeField extends StatefulWidget {
+  const TimeField({
     required this.label,
     this.required = false,
     this.onChanged,
@@ -11,10 +11,16 @@ class TimeField extends StatelessWidget {
   });
 
   final String label;
-  final TextEditingController _controller = TextEditingController();
   final bool required;
   final Function(String?)? onChanged;
   final String? errorText;
+
+  @override
+  State<TimeField> createState() => _TimeFieldState();
+}
+
+class _TimeFieldState extends State<TimeField> {
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +30,9 @@ class TimeField extends StatelessWidget {
           child: TextField(
             controller: _controller,
             decoration: InputDecoration(
-              labelText: label,
+              labelText: widget.label,
               helperText: '1969-07-20 20:18:04',
-              errorText: errorText,
+              errorText: widget.errorText,
             ),
             onChanged: setValue,
           ),
@@ -72,17 +78,17 @@ class TimeField extends StatelessWidget {
   }
 
   void setValue(String value) {
-    // final currentOffset = _controller.selection.base.offset;
+    final currentOffset = _controller.selection.base.offset;
     _controller.value = TextEditingValue(
       text: value,
       selection: TextSelection.fromPosition(
         TextPosition(
-          offset: value.length,
+          offset: currentOffset,
         ),
       ),
     );
-    if(onChanged != null) {
-      onChanged!(value);
+    if(widget.onChanged != null) {
+      widget.onChanged!(value);
     }
   }
 }

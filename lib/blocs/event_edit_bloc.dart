@@ -6,6 +6,7 @@ import 'package:alert/models/group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 part 'event_edit_bloc.freezed.dart';
 
@@ -132,10 +133,12 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
   }
 
   void startTimeUpdated(String? value) {
-    print("startTimeUpdated:$value");
     if (state is EventEditBlocData) {
       final data = state as EventEditBlocData;
-      final input = TimeInput.dirty(value: value ?? '');
+      final input = TimeInput.dirty(
+        value: value ?? '',
+        required: true,
+      );
       emit(
         data.copyWith(
           openedAt: input,
@@ -227,7 +230,7 @@ class TypeInput extends FormzInput<String, TypeInputError> {
   TypeInputError? validator(String value) {
     const List<String> eventTypes = [
       'lockdown',
-      // 'secure',
+      'secure',
       'shelter',
       'evacuate',
       'hold',
@@ -313,7 +316,7 @@ class TimeInput extends FormzInput<String, TimeInputError> {
       }
       return null;
     }
-    final parsed = DateTime.tryParse(value);
+    final parsed = DateFormat.yMd().add_jms().tryParse(value);
     if (parsed == null) {
       return TimeInputError.parse;
     }
