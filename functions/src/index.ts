@@ -7,12 +7,7 @@ import {
 exports.auditor = onDocumentWrittenWithAuthContext(
   "{collectionId}/{documentId}",
   (event) => {
-    const snapshot = event.data?.after;
-    if (!snapshot) {
-      return;
-    }
-
-    const data = snapshot.data();
+    const eventData = event.data;
     const {authType, authId} = event;
     logger.info(
       "auditor",
@@ -21,15 +16,49 @@ exports.auditor = onDocumentWrittenWithAuthContext(
       authType,
       authId
     );
-    if (data?.updatedBy != null) {
+    if (!eventData) {
       return;
     }
 
-    return event.data?.after.ref.set({
-      updatedBy: authId,
-      updatedAt: FieldValue.serverTimestamp(),
-    },
-    {merge: true}
-    );
+    const snapshot = event.data?.after;
+    if (!snapshot) {
+      // No snapshot data
+      return;
+    }
+    // const data = snapshot.data();
+    const updates = new Map<string, unknown>();
+
+    const before = eventData.before.exists;
+    const after = eventData.after.exists;
+    if (before === false && after === true) {
+      // Create
+      updates.set("createdBy", authId);
+      updates.set("createdAt", FieldValue.serverTimestamp());
+      updates.set("updatedBy", authId);
+      updates.set("updatedAt", FieldValue.serverTimestamp());
+    } else if (before === true && after === true) {
+      // Update
+      if (authType != "unknown") {
+        updates.set("updatedBy", authId);
+        updates.set("updatedAt", FieldValue.serverTimestamp());
+      }
+    } else if (before === true && after === false) {
+      // Delete
+      return;
+    } else {
+      throw new Error(
+        `Unknown Firestore event! before:${before}, after:${after}`
+      );
+    }
+
+    if (updates.size > 0) {
+      return event.data?.after.ref.set(
+        Object.fromEntries(updates),
+        {merge: true},
+      );
+    }
+
+    // No updates needed
+    return;
   });
 
