@@ -1,19 +1,35 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
-import {onRequest} from "firebase-functions/v2/https";
+import {FieldValue} from "firebase-admin/firestore";
 import * as logger from "firebase-functions/logger";
+import {
+  onDocumentWrittenWithAuthContext,
+} from "firebase-functions/v2/firestore";
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+exports.auditor = onDocumentWrittenWithAuthContext(
+  "{collectionId}/{documentId}",
+  (event) => {
+    const snapshot = event.data?.after;
+    if (!snapshot) {
+      return;
+    }
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+    const data = snapshot.data();
+    const {authType, authId} = event;
+    logger.info(
+      "auditor",
+      event.params.collectionId,
+      event.params.documentId,
+      authType,
+      authId
+    );
+    if (data?.updatedBy != null) {
+      return;
+    }
+
+    return event.data?.after.ref.set({
+      updatedBy: authId,
+      updatedAt: FieldValue.serverTimestamp(),
+    },
+    {merge: true}
+    );
+  });
+

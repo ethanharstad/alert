@@ -1,5 +1,12 @@
 {
   "projects": {
     "default": "alert-dev-60d76"
-  }
+  },
+  "targets": {},
+  "etags": {
+    "alert-dev-60d76": {
+      "extensionInstances": {}
+    }
+  },
+  "dataconnectEmulatorConfig": {}
 }
