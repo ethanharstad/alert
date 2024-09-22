@@ -1,8 +1,23 @@
-import {FieldValue} from "firebase-admin/firestore";
+import {getFirestore, FieldValue} from "firebase-admin/firestore";
+import functions = require("firebase-functions");
+import {initializeApp} from "firebase-admin/app";
 import * as logger from "firebase-functions/logger";
 import {
   onDocumentWrittenWithAuthContext,
 } from "firebase-functions/v2/firestore";
+
+initializeApp();
+const db = getFirestore();
+
+exports.userProfile = functions.auth.user().onCreate((user) => {
+  const uid = user.uid;
+  db.doc(`users/${uid}`).set({
+    "createdAt": FieldValue.serverTimestamp(),
+    "updatedAt": FieldValue.serverTimestamp(),
+    "name": user.displayName,
+    "email": user.email,
+  });
+});
 
 exports.auditor = onDocumentWrittenWithAuthContext(
   "{collectionId}/{documentId}",

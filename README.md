@@ -13,6 +13,7 @@ npm install -g firebase-tools
 ### Firestore
 
 Security Rules - `firestore.rules`
+`firebase deploy --only firestore:rules`
 
 Indexes - `firestore.indexes.json`
 
