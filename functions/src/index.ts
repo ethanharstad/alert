@@ -1,6 +1,6 @@
-import {getFirestore, FieldValue} from "firebase-admin/firestore";
+import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import functions = require("firebase-functions");
-import {initializeApp} from "firebase-admin/app";
+import { initializeApp } from "firebase-admin/app";
 import * as logger from "firebase-functions/logger";
 import {
   onDocumentWrittenWithAuthContext,
@@ -23,7 +23,7 @@ exports.auditor = onDocumentWrittenWithAuthContext(
   "{collectionId}/{documentId}",
   (event) => {
     const eventData = event.data;
-    const {authType, authId} = event;
+    const { authType, authId } = event;
     logger.info(
       "auditor",
       event.params.collectionId,
@@ -69,7 +69,7 @@ exports.auditor = onDocumentWrittenWithAuthContext(
     if (updates.size > 0) {
       return event.data?.after.ref.set(
         Object.fromEntries(updates),
-        {merge: true},
+        { merge: true },
       );
     }
 
