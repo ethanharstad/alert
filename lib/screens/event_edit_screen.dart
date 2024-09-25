@@ -1,10 +1,12 @@
 import 'package:alert/blocs/event_edit_bloc.dart';
 import 'package:alert/blocs/group_bloc.dart';
+import 'package:alert/blocs/organization_bloc.dart';
 import 'package:alert/widgets/app_scaffold.dart';
 import 'package:alert/widgets/time_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:alert/blocs/event_bloc.dart';
 
 class EventEditScreen extends StatelessWidget {
   const EventEditScreen({
@@ -18,7 +20,9 @@ class EventEditScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<EventEditBloc>(
       create: (_) => EventEditBloc(
+        eventBloc: context.read<EventBloc>(),
         groupBloc: context.read<GroupBloc>(),
+        organizationBloc: context.read<OrganizationBloc>(),
       )..typeSelected(initialType),
       child: BlocBuilder<EventEditBloc, EventEditBlocState>(
         builder: (BuildContext context, EventEditBlocState state) {
@@ -78,8 +82,9 @@ class EventEditScreen extends StatelessWidget {
                   ),
                   TimeField(
                     label: 'Start Time',
-                    onChanged: (value) => context.read<EventEditBloc>().startTimeUpdated(value),
-                    errorText: switch(openedAt.error) {
+                    onChanged: (value) =>
+                        context.read<EventEditBloc>().startTimeUpdated(value),
+                    errorText: switch (openedAt.error) {
                       null => null,
                       TimeInputError.empty => 'Start time is required.',
                       TimeInputError.before => 'Must be before X',
@@ -89,8 +94,9 @@ class EventEditScreen extends StatelessWidget {
                   ),
                   TimeField(
                     label: 'End Time',
-                    onChanged: (value) => context.read<EventEditBloc>().endTimeUpdated(value),
-                    errorText: switch(closedAt.error) {
+                    onChanged: (value) =>
+                        context.read<EventEditBloc>().endTimeUpdated(value),
+                    errorText: switch (closedAt.error) {
                       null => null,
                       TimeInputError.empty => 'Start time is required.',
                       TimeInputError.before => 'Must be before X',
@@ -129,7 +135,10 @@ class EventEditScreen extends StatelessWidget {
                           child: const Text('Cancel'),
                         ),
                         ElevatedButton(
-                          onPressed: isValid ? () {} : null,
+                          onPressed: isValid
+                              ? () =>
+                                  context.read<EventEditBloc>().createEvent()
+                              : null,
                           child: const Text('Save'),
                         ),
                       ],

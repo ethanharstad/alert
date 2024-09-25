@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:core';
 
+import 'package:alert/blocs/event_bloc.dart';
 import 'package:alert/blocs/group_bloc.dart';
+import 'package:alert/blocs/organization_bloc.dart';
+import 'package:alert/models/event.dart';
 import 'package:alert/models/group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -13,12 +16,19 @@ part 'event_edit_bloc.freezed.dart';
 part 'event_edit_bloc_state.dart';
 
 class EventEditBloc extends Cubit<EventEditBlocState> {
-  EventEditBloc({required GroupBloc groupBloc})
-      : super(const EventEditBlocLoading()) {
+  EventEditBloc({
+    required OrganizationBloc organizationBloc,
+    required GroupBloc groupBloc,
+    required EventBloc eventBloc,
+  })  : _eventBloc = eventBloc,
+        _organizationBloc = organizationBloc,
+        super(const EventEditBlocLoading()) {
     _groupListener = groupBloc.stream.listen(_groupsUpdated);
     _groupsUpdated(groupBloc.state);
   }
 
+  final EventBloc _eventBloc;
+  final OrganizationBloc _organizationBloc;
   late final StreamSubscription<GroupBlocState> _groupListener;
   final Map<String, bool?> _selections = {};
   final Map<String, String?> _parents = {};
@@ -206,6 +216,28 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
       }
       _selections[parentId] = parentValue;
       _updateParent(groupId: parentId, value: value);
+    }
+  }
+
+  void createEvent() {
+    if (state is EventEditBlocData) {
+      final data = state as EventEditBlocData;
+      final Event event = Event(
+        organizationId: (_organizationBloc.state as OrganizationBlocData)
+            .selectedOrganization!
+            .id!,
+        eventType: data.selectedType.value,
+        openedAt: DateFormat.yMd().add_jms().tryParse(data.openedAt.value) ??
+            DateTime.now(),
+        closedAt: DateFormat.yMd().add_jms().tryParse(data.closedAt.value),
+        title: data.title.value,
+        notes: data.notes.value,
+        groupIds: data.selections.entries
+            .where((x) => x.value ?? false)
+            .map((x) => x.key)
+            .toList(growable: false),
+      );
+      _eventBloc.createEvent(event);
     }
   }
 

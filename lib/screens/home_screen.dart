@@ -1,12 +1,10 @@
-import 'package:go_router/go_router.dart';
 import 'package:alert/blocs/organization_bloc.dart';
-import 'package:alert/models/event.dart';
-import 'package:alert/repositories/event_repository.dart';
 import 'package:alert/widgets/app_scaffold.dart';
 import 'package:alert/widgets/home_tile.dart';
 import 'package:alert/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -70,37 +68,25 @@ class HomeScreen extends StatelessWidget {
             color: Colors.red,
             title: 'Lockdown',
             icon: Icons.lock,
-            onTap: () => createEvent(
-              context: context,
-              eventType: 'lockdown',
-            ),
+            onTap: () => context.goNamed("EditEvent", extra: "lockdown"),
           ),
           HomeTile(
             color: Colors.blue,
             title: 'Secure',
             icon: Icons.front_hand,
-            onTap: () => createEvent(
-              context: context,
-              eventType: 'secure',
-            ),
+            onTap: () => context.goNamed("EditEvent", extra: "secure"),
           ),
           HomeTile(
             color: Colors.orange,
             title: 'Shelter',
             icon: Icons.home,
-            onTap: () => createEvent(
-              context: context,
-              eventType: 'shelter',
-            ),
+            onTap: () => context.goNamed("EditEvent", extra: "shelter"),
           ),
           HomeTile(
             color: Colors.green,
             title: 'Evacuate',
             icon: Icons.directions_walk,
-            onTap: () => createEvent(
-              context: context,
-              eventType: 'evacuate',
-            ),
+            onTap: () => context.goNamed("EditEvent", extra: "evacuate"),
           ),
           HomeTile(
             color: Colors.deepPurpleAccent,
@@ -111,18 +97,5 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void createEvent({required BuildContext context, required String eventType}) {
-    final event = Event(
-      organizationId:
-          (context.read<OrganizationBloc>().state as OrganizationBlocData)
-              .selectedOrganization!
-              .id!,
-      eventType: eventType,
-      openedAt: DateTime.now(),
-      title: eventType,
-    );
-    context.read<EventRepository>().persistEvent(event);
   }
 }
