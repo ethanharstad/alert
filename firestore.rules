@@ -11,23 +11,46 @@ service cloud.firestore {
     }
 
     match /organizations/{organization} {
-      allow read: if get(/databases/$(database)/documents/user_organization/$(getAccessId(organization))).data.access in ['admin', 'manager', 'member'];
+      allow read: if isMember(organization);
+      allow write: if isOwner(organization);
     }
 
     match /groups/{group} {
-      allow read: if isSignedIn();
+      allow read: if isMember(resource.data.organizationId);
+      allow write: if isManager(resource.data.organizationId);
     }
 
     match /events/{event} {
-      allow read: if isSignedIn();
+      allow read: if isMember(resource.data.organizationId);
+      allow write: if isMember(resource.data.organizationId);
     }
-  }
 
-  function getAccessId(organization) {
-    return request.auth.uid + '-' + organization;
-  }
+    function isSignedIn() {
+      return request.auth != null;
+    }
 
-  function isSignedIn() {
-    return request.auth != null;
+    function getAccessId(organization) {
+      return request.auth.uid + '-' + organization;
+    }
+
+    function getOrgAccess(organization) {
+      return get(/databases/$(database)/documents/user_organization/$(getAccessId(organization))).data.access;
+    }
+
+    function isAdmin() {
+      return false;
+    }
+
+    function isOwner(organization) {
+      return isSignedIn() && getOrgAccess(organization) == 'owner';
+    }
+
+    function isManager(organization) {
+      return isSignedIn() && getOrgAccess(organization) in ['owner', 'manager'];
+    }
+
+    function isMember(organization) {
+      return isSignedIn() && getOrgAccess(organization) in ['owner', 'manager', 'member'];
+    }
   }
 }
