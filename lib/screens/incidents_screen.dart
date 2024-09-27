@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:alert/models/event.dart';
 import 'package:intl/intl.dart';
 
-class IncidentsScreen extends StatelessWidget {
-  const IncidentsScreen({super.key});
+class EventListScreen extends StatelessWidget {
+  const EventListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,26 +33,46 @@ class IncidentsScreen extends StatelessWidget {
                 child: Text("No incidents found."),
               ),
               EventBlocData(:final events) =>
-                  ListView(
-                    children: [
-                      for (final event in events)
-                        ListTile(
-                          selected: event.isOpen,
-                          leading: switch (event.eventType) {
-                            'lockdown' => const Icon(Icons.lock),
-                            'secure' => const Icon(Icons.front_hand),
-                            'shelter' => const Icon(Icons.home),
-                            'evacuate' => const Icon(Icons.directions_walk),
-                            'hold' => const Icon(Icons.door_front_door),
-                            String() => null,
-                          },
-                          title: event.title != null
-                              ? Text(event.title!)
-                              : null,
-                          subtitle: Text(DateFormat.yMd().add_jms().format(event.openedAt)),
-                          trailing: getTrailing(event),
+                  ListView.builder(
+                    itemCount: events.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final event = events[index];
+                      return ListTile(
+                        key: Key(event.id!),
+                        isThreeLine: event.isClosed,
+                        selected: event.isOpen,
+                        leading: switch (event.eventType) {
+                          'lockdown' => const Icon(Icons.lock),
+                          'secure' => const Icon(Icons.front_hand),
+                          'shelter' => const Icon(Icons.home),
+                          'evacuate' => const Icon(Icons.directions_walk),
+                          'hold' => const Icon(Icons.door_front_door),
+                          String() => null,
+                        },
+                        title: event.title != null
+                            ? Text(event.title!)
+                            : null,
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.call_made),
+                                Text(DateFormat.yMd().add_jms().format(event.openedAt)),
+                              ],
+                            ),
+                            if(event.closedAt != null)
+                              Row(
+                                children: [
+                                  const Icon(Icons.call_received),
+                                  Text(DateFormat.yMd().add_jms().format(event.closedAt!)),
+                                ],
+                              ),
+                          ],
                         ),
-                    ],
+                        trailing: getTrailing(event),
+                      );
+                    },
                   ),
             },
           );

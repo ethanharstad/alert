@@ -43,7 +43,7 @@ final appRouter = GoRouter(
           path: 'incidents',
           name: 'incidents',
           builder: (BuildContext context, GoRouterState state) =>
-              const IncidentsScreen(),
+              const EventListScreen(),
         ),
         GoRoute(
           path: 'organization',
