@@ -16,9 +16,11 @@ class EventRepository {
     return _instance;
   }
 
-  Future<void> persistEvent(Event event) {
+  Future<Event?> persistEvent(Event event) async {
     final doc = _collectionReference.doc(event.id);
-    return doc.set(event);
+    await doc.set(event);
+    final saved = await doc.get().then<Event?>((value) => value.data());
+    return saved;
   }
 
   Stream<QuerySnapshot<Event>> getEvents(String organizationId) {
@@ -27,6 +29,10 @@ class EventRepository {
         .orderBy("openedAt", descending: true)
         .limit(10)
         .snapshots();
+  }
+
+  Stream<DocumentSnapshot<Event>> getEvent(String eventId) {
+    return _collectionReference.doc(eventId).snapshots();
   }
 
   static Event _fromFirestore(

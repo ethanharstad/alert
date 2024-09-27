@@ -219,7 +219,7 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
     }
   }
 
-  void createEvent() {
+  void createEvent() async {
     if (state is EventEditBlocData) {
       final data = state as EventEditBlocData;
       final Event event = Event(
@@ -237,7 +237,20 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
             .map((x) => x.key)
             .toList(growable: false),
       );
-      _eventBloc.createEvent(event);
+      final created = await _eventBloc.createEvent(event).onError(_onError);
+      if (created != null) {
+        emit(EventEditBlocComplete(event: created));
+      }
+    }
+  }
+
+  Future<Event?> _onError(Object error, StackTrace _) async {
+    if (state is EventEditBlocData) {
+      emit(
+        (state as EventEditBlocData).copyWith(
+          error: error.toString(),
+        ),
+      );
     }
   }
 

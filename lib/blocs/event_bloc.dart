@@ -62,7 +62,7 @@ class EventBloc extends Cubit<EventBlocState> {
     );
   }
 
-  Future<void> createEvent(Event event) {
+  Future<Event?> createEvent(Event event) {
     return _eventRepository.persistEvent(event);
   }
 }
