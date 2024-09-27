@@ -17,12 +17,12 @@ service cloud.firestore {
 
     match /groups/{group} {
       allow read: if isMember(resource.data.organizationId);
-      allow write: if isManager(resource.data.organizationId);
+      allow write: if isManager(request.resource.data.organizationId);
     }
 
     match /events/{event} {
       allow read: if isMember(resource.data.organizationId);
-      allow write: if isMember(resource.data.organizationId);
+      allow write: if isMember(request.resource.data.organizationId);
     }
 
     function isSignedIn() {
