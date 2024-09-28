@@ -252,6 +252,7 @@ class EventEditBloc extends Cubit<EventEditBlocState> {
         ),
       );
     }
+    return null;
   }
 
   @override

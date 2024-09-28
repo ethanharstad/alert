@@ -1,3 +1,4 @@
+import 'package:alert/blocs/event_bloc.dart';
 import 'package:alert/blocs/event_edit_bloc.dart';
 import 'package:alert/blocs/group_bloc.dart';
 import 'package:alert/blocs/organization_bloc.dart';
@@ -6,7 +7,6 @@ import 'package:alert/widgets/time_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:alert/blocs/event_bloc.dart';
 
 class EventEditScreen extends StatelessWidget {
   const EventEditScreen({
@@ -26,9 +26,9 @@ class EventEditScreen extends StatelessWidget {
       )..typeSelected(initialType),
       child: BlocListener<EventEditBloc, EventEditBlocState>(
         listener: (BuildContext context, EventEditBlocState state) {
-          switch(state) {
+          switch (state) {
             case EventEditBlocData(:final error):
-              if(error != null) {
+              if (error != null) {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
@@ -39,7 +39,12 @@ class EventEditScreen extends StatelessWidget {
               }
               return;
             case EventEditBlocComplete(:final event):
-              context.goNamed('incidents');
+              context.goNamed(
+                'eventDetail',
+                pathParameters: {
+                  'eventId': event.id!,
+                },
+              );
               return;
             default:
               return;

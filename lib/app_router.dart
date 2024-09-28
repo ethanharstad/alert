@@ -1,7 +1,8 @@
 import 'package:alert/blocs/app_bloc.dart';
+import 'package:alert/screens/event_detail_screen.dart';
 import 'package:alert/screens/event_edit_screen.dart';
+import 'package:alert/screens/event_list_screen.dart';
 import 'package:alert/screens/home_screen.dart';
-import 'package:alert/screens/incidents_screen.dart';
 import 'package:alert/screens/login_screen.dart';
 import 'package:alert/screens/organization_detail_screen.dart';
 import 'package:alert/screens/settings_screen.dart';
@@ -44,6 +45,14 @@ final appRouter = GoRouter(
           name: 'incidents',
           builder: (BuildContext context, GoRouterState state) =>
               const EventListScreen(),
+          routes: [
+            GoRoute(
+              path: ':eventId',
+              name: 'eventDetail',
+              builder: (BuildContext context, GoRouterState state) =>
+                  EventDetailScreen(eventId: state.pathParameters['eventId']!),
+            ),
+          ],
         ),
         GoRoute(
           path: 'organization',
